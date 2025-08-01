@@ -19,9 +19,9 @@ Você controla um Guardião da Água em um mundo repleto de obstáculos e desafi
 
 Este projeto é construído com carinho por:
 
-- 💙 Thamyres Delmindo — lógica, QA e estruturação técnica  
-- 💛 Ana — arte, personagens e cenários  
-- 💜 Bruna — mecânica do jogo e design de fases  
+- 💙 Thamyres Delmindo 
+- 💛 Ana Coutinho
+- 💜 Bruna Teixeira
 
 ---
 
