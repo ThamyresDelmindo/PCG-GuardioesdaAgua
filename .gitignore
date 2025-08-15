@@ -1,0 +1,1 @@
+printf ".venv/\n__pycache__/\n*.pyc\n.DS_Store\n" > .gitignore
