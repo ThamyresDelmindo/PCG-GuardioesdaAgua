@@ -1,7 +1,8 @@
 import pygame
 from src.tela_inicial import TelaInicial
-#from src.fase1 import Fase1
-#from src.perguntas import Perguntas
+# from src.fase1 import Fase1
+# from src.perguntas import Perguntas
+from mvp import MVP
 
 LARGURA, ALTURA = 960, 540
 FPS = 60
@@ -12,14 +13,12 @@ def main():
     pygame.display.set_caption("Guardiões da Água")
     clock = pygame.time.Clock()
 
-    fonte_titulo = pygame.font.SysFont(None, 56)
-    fonte_sub = pygame.font.SysFont(None, 28)
-
     # rotas → cada classe numa “página”
     telas = {
         "tela_inicial": TelaInicial(LARGURA, ALTURA),
         #"fase1": Fase1(LARGURA, ALTURA),
-        #"perguntas": Perguntas(LARGURA, ALTURA)
+        # "perguntas": Perguntas(LARGURA, ALTURA),
+        "fase1": MVP(LARGURA, ALTURA),
     }
 
     estado = "tela_inicial"  # rota inicial
@@ -36,7 +35,8 @@ def main():
                 if proximo in telas:
                     estado = proximo
 
-        telas[estado].draw(tela, fonte_titulo, fonte_sub)
+        # draw agora não recebe fontes
+        telas[estado].draw(tela)
 
         pygame.display.flip()
         clock.tick(FPS)

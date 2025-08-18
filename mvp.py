@@ -1,74 +1,66 @@
 import pygame
 from pygame.math import Vector2
-#Aqui coloquei um 'from' no init.py pra não ficar complicada essa exportação
-#from src.tela_inicial.tela_inicial import TelaInicial 
 
-
-LARGURA, ALTURA = 960, 540
-FPS = 60
 GRAVIDADE = 0.8
 PULO = -16
 VELOCIDADE = 6
 
-def main(): 
-    pygame.init()
-    tela = pygame.display.set_mode((LARGURA, ALTURA))
-    pygame.display.set_caption("Guardiões da Água - MVP")
-    clock = pygame.time.Clock()
-    fonte = pygame.font.SysFont(None, 28)
+class MVP:
+    def __init__(self, largura=960, altura=540):
+        self.largura = largura
+        self.altura = altura
 
-    # Cenário
-    chao = pygame.Rect(0, ALTURA - 80, LARGURA, 80)
+        # cenário
+        self.chao = pygame.Rect(0, self.altura - 80, self.largura, 80)
 
-    # jOGADOR(Por enquanto um quadrado)
-    player = pygame.Rect(120, ALTURA - 160,42,42)
-    vel = Vector2(0, 0)
-    no_chao = False
+        # jogador (quadradinho)
+        self.player = pygame.Rect(120, self.altura - 160, 42, 42)
+        self.vel = Vector2(0, 0)
+        self.no_chao = False
 
-    rodando = True
-    while rodando:
-        for e in pygame.event.get():
-            if e.type == pygame.QUIT:
-                rodando = False
-        # Input
+        # UI
+        self.fonte = pygame.font.SysFont(None, 28)
+
+    def handle_event(self, e):
+        # por enquanto, nada que mude de “tela”
+        return None
+
+    def _update(self):
+        # input contínuo
         teclas = pygame.key.get_pressed()
-        vel.x = 0
+        self.vel.x = 0
         if teclas[pygame.K_LEFT] or teclas[pygame.K_a]:
-            vel.x = -VELOCIDADE
+            self.vel.x = -VELOCIDADE
         if teclas[pygame.K_RIGHT] or teclas[pygame.K_d]:
-            vel.x = VELOCIDADE
-        if (teclas[pygame.K_SPACE] or teclas[pygame.K_w] or teclas[pygame.K_UP]) and no_chao:
-            vel.y = PULO
-        
-        # Física básica
-        vel.y += GRAVIDADE
-        player.x += int(vel.x)
-        player.y += int(vel.y)
+            self.vel.x = VELOCIDADE
+        if (teclas[pygame.K_SPACE] or teclas[pygame.K_w] or teclas[pygame.K_UP]) and self.no_chao:
+            self.vel.y = PULO
 
-        # colisão com o chão
-        if player.colliderect(chao):
-            player.bottom = chao.top
-            vel.y = 0
-            no_chao = True
+        # física básica
+        self.vel.y += GRAVIDADE
+        self.player.x += int(self.vel.x)
+        self.player.y += int(self.vel.y)
+
+        # colisão chão
+        if self.player.colliderect(self.chao):
+            self.player.bottom = self.chao.top
+            self.vel.y = 0
+            self.no_chao = True
         else:
-            no_chao = False
+            self.no_chao = False
 
-        # Limites da tela
-        player.left = max(player.left, 0)
-        player.right = min(player.right, LARGURA)
+        # limites da tela
+        if self.player.left < 0:
+            self.player.left = 0
+        if self.player.right > self.largura:
+            self.player.right = self.largura
 
-        #Desenho
+    def draw(self, tela):
+        self._update()
+
+        # desenha
         tela.fill((18, 18, 28))
-        pygame.draw.rect(tela, (30, 120, 255), chao) #chao(azul = agua/tema)
-        pygame.draw.rect(tela, (240, 240, 240), player) #jogador
-        txt = fonte.render("←/→ ou A/D para andar | Espaço para pular", True, (200, 200, 200))
+        pygame.draw.rect(tela, (30, 120, 255), self.chao)   # chão (água)
+        pygame.draw.rect(tela, (240, 240, 240), self.player)  # jogador
+        txt = self.fonte.render("←/→ ou A/D para andar | Espaço para pular", True, (200, 200, 200))
         tela.blit(txt, (20, 20))
-
-        pygame.display.flip()
-        clock.tick(FPS)
-
-    pygame.quit()
-
-if __name__ == "__main__":
-    main()
-
