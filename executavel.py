@@ -8,6 +8,14 @@ from mvp import MVP
 LARGURA, ALTURA = 960, 540
 FPS = 60
 
+import random
+
+perguntas = [
+    ("O que devemos fazer para economizar água?", "fechar a torneira"),
+    ("Qual atitude ajuda a preservar rios?", "nao jogar lixo"),
+]
+
+
 def main():
     pygame.init()
     tela = pygame.display.set_mode((LARGURA, ALTURA))
@@ -18,7 +26,7 @@ def main():
     telas = {
         "inicial": TelaInicial(LARGURA, ALTURA),  # Tela inicial não está implementada
         "fase1": Fase1(LARGURA, ALTURA),
-        "pergunta": PerguntaTela(LARGURA, ALTURA, "Qual é a capital da França?", "Paris"),  
+        "pergunta": PerguntaTela(LARGURA, ALTURA, *random.choice(perguntas)),
         "mvp": MVP(LARGURA, ALTURA) # Adiciona a tela do MVP    
     }
 
